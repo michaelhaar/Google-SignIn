@@ -6,3 +6,7 @@ __pycache__/
 
 ### Vagrant ###
 .vagrant/
+
+
+### Google OAuth ###
+client_secret.json
