@@ -9,4 +9,4 @@ __pycache__/
 
 
 ### Google OAuth ###
-client_secret.json
+client_secrets.json

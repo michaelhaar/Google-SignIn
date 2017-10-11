@@ -26,7 +26,7 @@
     </div>
     <!--END GOOGLE PLUS SIGN IN BUTTON -->
 
-    <div id="result"></div>
+    <div id="resultPlaceholder"></div>
 
     <!-- GOOGLE PLUS SIGN IN -->
     <script>
@@ -34,22 +34,25 @@
       if (authResult['code']) {
         // Hide the sign-in button now that the user is authorized
         $('#signinButton').attr('style', 'display: none');
-        // Use a JQuery to create an AJAX call that passes the one-time-use code to our Flask server.
-        // If our server responds, write a 'login successful' message to the web page
-        // and then redirect back to the main page
+        // Use a JQuery to create an AJAX call that passes the
+        // one-time-authentication code to our Flask server. If our server
+        // responds, write a 'login successful' message to the web page and
+        // then redirect back to the main page.
         $.ajax({
           type: 'POST',
-          // The url, which will be called
+          // Set the url, which should be called
+          // TODO add some documentation here
           url: '/gconnect?state={{ CSRF_state_token }}',
           // We don't want JQuery to process the response into a String
           processData: false,
-          // Specify the data we want to send to our server
+          // Specify the data, which we want to send to our server
           data: authResult['code'],
           contentType: 'application/octet-stream; charset=utf-8',
           success: function(result) {
+            // This function is called if the request succeeds.
             // Handle or verify the server response if necessary.
             if (result) {
-              $('#result').html('Login Successful!</br>' + result + '</br>Redirecting...')
+              $('#resultPlaceholder').html('Login Successful!</br>' + result + '</br>Redirecting...')
               // Redirect to the main page after about 4seconds
               setTimeout(function() {
                 window.location.href = "/";
@@ -58,7 +61,7 @@
             } else if (authResult['error']) {
               console.log('There was an error: ' + authResult['error']);
             } else {
-              $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+              $('#resultPlaceholder').html('Failed to make a server-side call. Check your configuration and console.');
             }
           }
         });
